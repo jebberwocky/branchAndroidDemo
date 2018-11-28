@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 .setFeature("sharing")
                 .setCampaign("content 123 launch")
                 .setStage("new user")
-                .addControlParameter("$desktop_url", "http://example.com/home")
+                .addControlParameter("$desktop_url", "http://whereyogi.com")
                 .addControlParameter("custom", "data")
                 .addControlParameter("custom_random", Long.toString(Calendar.getInstance().getTimeInMillis()));
 
