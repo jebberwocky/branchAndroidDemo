@@ -10,6 +10,7 @@ public class CustomApplicationClass extends Application {
 
         // Branch logging for debugging
         Branch.enableLogging();
+        Branch.enableDebugMode();
 
         // Branch object initialization
         Branch.getAutoInstance(this);

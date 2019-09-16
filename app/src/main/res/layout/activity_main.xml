@@ -20,12 +20,12 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:layout_width="199dp"
         android:layout_height="wrap_content"
         android:onClick="trackCommerce"
         android:text="Track Commerce"
-        tools:layout_editor_absoluteX="21dp"
-        tools:layout_editor_absoluteY="35dp" />
+        tools:layout_editor_absoluteX="169dp"
+        tools:layout_editor_absoluteY="120dp" />
 
     <Button
         android:id="@+id/button2"
@@ -33,8 +33,8 @@
         android:layout_height="wrap_content"
         android:onClick="createLink"
         android:text="Create Link"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="282dp" />
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="120dp" />
 
     <EditText
         android:id="@+id/linkText"
@@ -45,13 +45,13 @@
         android:selectAllOnFocus="true"
         android:text="url"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="207dp" />
+        tools:layout_editor_absoluteY="38dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="147dp" />
+        app:layout_constraintGuide_begin="255dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "687680074727",
+    "firebase_url": "https://whereyogi-jeff.firebaseio.com",
+    "project_id": "whereyogi-jeff",
+    "storage_bucket": "whereyogi-jeff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687680074727:android:37ced5f1f67ed079",
+        "android_client_info": {
+          "package_name": "whereyogi.com.whereyogi_testflight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687680074727-vlpfljsugi3ookgqr8qmi0nnndf0baue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR7odVUMysPxOeyJmx5bsQTvSc1TsEpQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687680074727-vlpfljsugi3ookgqr8qmi0nnndf0baue.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

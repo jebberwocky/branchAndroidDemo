@@ -1,5 +1,6 @@
 package whereyogi.com.whereyogi_testflight;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,9 +25,27 @@ import io.branch.referral.util.ProductCategory;
 import io.branch.referral.util.BranchContentSchema;
 import io.branch.referral.util.LinkProperties;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+
+import com.google.firebase.iid.FirebaseInstanceIdService;
+
+
+/*
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.analytics.HitBuilders;
+*/
+
+
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
+
+    //private static GoogleAnalytics sAnalytics;
+    //private static Tracker sTracker;
 
     private TextView mTextMessage;
     private TextView linkText;
@@ -54,7 +73,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
+        // GA
+        //sAnalytics = GoogleAnalytics.getInstance(this);
+        //sTracker = sAnalytics.newTracker("UA-61112099-1");
 
+        //String client_id = sTracker.get("&cid");
+        //Log.i("GA client_ud", client_id);
+        //Branch.getInstance().setRequestMetadata("$google_analytics_client_id",client_id);
+
+        Branch.getInstance().setIdentity("UUID123456");
+        //Branch.getInstance().setPreinstallCampaign("jeff_preinstall_test_campaign");
+        //Branch.getInstance().setPreinstallPartner("jeff_fake_OEM");
+        Branch.getInstance().setRequestMetadata("app_store","JEFF_STORE");
         // Branch init
         Branch.getInstance().initSession(new Branch.BranchReferralInitListener() {
             @Override
@@ -62,10 +92,14 @@ public class MainActivity extends AppCompatActivity {
                 if (error == null) {
                     Log.i("BRANCH SDK INIT", referringParams.toString());
                     try {
-                        Log.i("BRANCH SDK", referringParams.get("$canonical_url").toString());
+                        //Log.i("BRANCH params", referringParams.get("params").toString());
+                        Log.i("BRANCH $canonical_url", referringParams.get("$canonical_url").toString());
+
                     }catch (JSONException exception){
                         Log.e("Casting error", exception.toString());
                     }
+                    int credits = Branch.getInstance(getApplicationContext()).getCredits();
+                    Log.i("Branch Credit", Integer.toString(credits));
                 } else {
                     Log.e("BRANCH SDK ERROR", error.getMessage());
                 }
@@ -79,6 +113,19 @@ public class MainActivity extends AppCompatActivity {
         // first
         JSONObject installParams = Branch.getInstance().getFirstReferringParams();
         Log.i("BRANCH SDK install", installParams.toString());
+
+        //
+        FirebaseInstanceId.getInstance().getInstanceId().
+                addOnSuccessListener( MainActivity.this, new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String deviceToken = instanceIdResult.getToken();
+                // Do whatever you want with your token now
+                // i.e. store it on SharedPreferences or DB
+                // or directly send it to server
+                Log.i("FIREBASE SDK token", deviceToken);
+            }
+        });
     }
 
     @Override
@@ -98,6 +145,10 @@ public class MainActivity extends AppCompatActivity {
 
     //
     public void createLink(View view){
+
+        Branch.getInstance().setIdentity("JEFFUUID");
+
+
         BranchUniversalObject buo = new BranchUniversalObject()
                 .setCanonicalIdentifier("content/12345")
                 .setTitle("Created from Android SDK")
@@ -124,6 +175,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+
+    public void trackContent(View view){
+
     }
 
 
@@ -156,19 +212,38 @@ public class MainActivity extends AppCompatActivity {
                 .addKeyWord("keyword1")
                 .addKeyWord("keyword2");
 
-        new BranchEvent(BRANCH_STANDARD_EVENT.ADD_TO_CART)
-                .setAffiliation("test_affiliation")
-                .setCoupon("Coupon Code")
-                .setCurrency(CurrencyType.USD)
-                .setDescription("Customer added item to cart")
-                .setShipping(0.0)
-                .setTax(9.75)
-                .setRevenue(1.5)
-                .setSearchQuery("Test Search query")
-                .addCustomDataProperty("Custom_Event_Property_Key1", "Custom_Event_Property_val1")
-                .addCustomDataProperty("Custom_Event_Property_Key2", "Custom_Event_Property_val2")
+        new BranchEvent(BRANCH_STANDARD_EVENT.PURCHASE)
                 .addContentItems(buo)
-                .logEvent( MainActivity.this);
+                .setCurrency(CurrencyType.USD)
+                .setTransactionID("order_id_1231231")
+                .setRevenue(10)
+                .addCustomDataProperty("payment","Cod")
+                .logEvent(this.getApplicationContext());
+/*
+        new BranchEvent(BRANCH_STANDARD_EVENT.PURCHASE)
+                .setCurrency(CurrencyType.USD)
+                .setDescription("用户购买xxx")
+                .setRevenue(9.99) //此次购买收入
+                .addCustomDataProperty("purchase_channel", "Google Play US")
+                .logEvent(MainActivity.this);
+    */
+        new BranchEvent(BRANCH_STANDARD_EVENT.VIEW_ITEM)
+                .addContentItems(buo)
+                .setCurrency(CurrencyType.USD)
+                .setRevenue(10)
+                .addCustomDataProperty("type", "user")
+                .logEvent(MainActivity.this);
+
+        new BranchEvent(BRANCH_STANDARD_EVENT.VIEW_ITEMS)
+                .addContentItems(buo)
+                .addCustomDataProperty("type", "user")
+                .logEvent(MainActivity.this);
+
+
+        new BranchEvent("LOGIN")
+                .addCustomDataProperty("type", "user")
+                .logEvent(MainActivity.this);
+
     }
 
 }
