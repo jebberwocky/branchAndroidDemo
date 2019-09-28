@@ -45,6 +45,7 @@
 
         <!-- Branch init -->
         <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_igTdpT9cigREKYlQt5abZeocrwkCS0mo" />
+        <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="key_test_ekIimVYpcmSxN5lJBWlPLaeoyspyH0iy" />
         <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />
 
 

@@ -18,7 +18,9 @@ import io.branch.referral.Branch;
 import io.branch.referral.BranchError;
 import io.branch.indexing.BranchUniversalObject;
 import io.branch.referral.util.BRANCH_STANDARD_EVENT;
+import io.branch.referral.util.BranchCrossPlatformId;
 import io.branch.referral.util.BranchEvent;
+import io.branch.referral.util.BranchLastAttributedTouchData;
 import io.branch.referral.util.ContentMetadata;
 import io.branch.referral.util.CurrencyType;
 import io.branch.referral.util.ProductCategory;
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         Branch.getInstance().setRequestMetadata("app_store","JEFF_STORE");
         // Branch init
         Branch.getInstance().initSession(new Branch.BranchReferralInitListener() {
+
             @Override
             public void onInitFinished(JSONObject referringParams, BranchError error) {
                 if (error == null) {
@@ -105,6 +108,30 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, this.getIntent().getData(), this);
+
+        Branch.getInstance().getLastAttributedTouchData(new BranchLastAttributedTouchData.
+                BranchLastAttributedTouchDataListener() {
+            @Override
+            public void onDataFetched(JSONObject jsonObject, BranchError error) {
+                if (error == null) {
+                    Log.i("LATD: ", jsonObject.toString());
+                } else {
+                    Log.e("LATD error: ", error.getMessage());
+                }
+
+            }
+        },30);
+
+        Branch.getInstance().getCrossPlatformIds(new BranchCrossPlatformId.BranchCrossPlatformIdListener() {
+            @Override
+            public void onDataFetched(BranchCrossPlatformId.BranchCPID branchCPID, BranchError error) {
+                if (error == null) {
+                    Log.i("CPID: ", branchCPID.toString());
+                } else {
+                    Log.e("CPID error: ", error.getMessage());
+                }
+            }
+        });
 
         // latest
         JSONObject sessionParams = Branch.getInstance().getLatestReferringParams();
