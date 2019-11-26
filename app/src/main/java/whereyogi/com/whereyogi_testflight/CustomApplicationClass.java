@@ -3,6 +3,8 @@ package whereyogi.com.whereyogi_testflight;
 import android.app.Application;
 import io.branch.referral.Branch;
 
+import io.branch.referral.deviceimei.BranchDeviceImei;
+
 public class CustomApplicationClass extends Application {
     @Override
     public void onCreate() {
@@ -14,5 +16,6 @@ public class CustomApplicationClass extends Application {
         Branch.disableTestMode();
         // Branch object initialization
         Branch.getAutoInstance(this);
+        Branch.getInstance().addModule(BranchDeviceImei.get(this));
     }
 }

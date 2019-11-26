@@ -28,20 +28,6 @@ import io.branch.referral.util.ProductCategory;
 import io.branch.referral.util.BranchContentSchema;
 import io.branch.referral.util.LinkProperties;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
-import com.google.firebase.dynamiclinks.ShortDynamicLink;
-
-
-
-import com.google.firebase.iid.FirebaseInstanceIdService;
 
 
 /*
@@ -151,9 +137,9 @@ public class MainActivity extends AppCompatActivity {
         Log.i("BRANCH SDK install", installParams.toString());
 
 
-        Log.i("BRANCH INTENT", this.getIntent().getData().toString());
+        //Log.i("BRANCH INTENT", this.getIntent().getData().toString());
 
-        Log.i("FIREBASEDLINK", "FIRE read link");
+        /*Log.i("FIREBASEDLINK", "FIRE read link");
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
@@ -179,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         Log.e("FIREBASEDLINK", "getDynamicLink:onFailure");
                     }
-                });
+                });*/
 
         /*
         FirebaseInstanceId.getInstance().getInstanceId().
@@ -198,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onNewIntent(Intent intent) {
         this.setIntent(intent);
-        Log.i("BRANCH INTENT", this.getIntent().getData().toString());
+        //Log.i("BRANCH INTENT", this.getIntent().getData().toString());
     }
 
     @Override
