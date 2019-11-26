@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.util.Log;
 import android.view.View;
+import android.net.Uri;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,9 +28,17 @@ import io.branch.referral.util.ProductCategory;
 import io.branch.referral.util.BranchContentSchema;
 import io.branch.referral.util.LinkProperties;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
+
 
 
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -84,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         //Branch.getInstance().setRequestMetadata("$google_analytics_client_id",client_id);
 
         Branch.getInstance().setIdentity("UUID123456");
-        //Branch.getInstance().setPreinstallCampaign("jeff_preinstall_test_campaign");
+        //Branch.getInstance().setPreinstallCampaign("agency_654143947735585363_My_PreInstall_test3_Ad_Campaign");
         //Branch.getInstance().setPreinstallPartner("jeff_fake_OEM");
         Branch.getInstance().setRequestMetadata("app_store","JEFF_STORE");
         // Branch init
@@ -141,7 +150,38 @@ public class MainActivity extends AppCompatActivity {
         JSONObject installParams = Branch.getInstance().getFirstReferringParams();
         Log.i("BRANCH SDK install", installParams.toString());
 
-        //
+
+        Log.i("BRANCH INTENT", this.getIntent().getData().toString());
+
+        Log.i("FIREBASEDLINK", "FIRE read link");
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                        }
+
+                        if(pendingDynamicLinkData==null)
+                            Log.i("FIREBASEDLINK", "pendingDynamicLinkData is null");
+
+                        if(deepLink!=null)
+                            Log.i("FIREBASEDLINK", deepLink.toString());
+                        else
+                            Log.i("FIREBASEDLINK", "deeplink is null");
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("FIREBASEDLINK", "getDynamicLink:onFailure");
+                    }
+                });
+
+        /*
         FirebaseInstanceId.getInstance().getInstanceId().
                 addOnSuccessListener( MainActivity.this, new OnSuccessListener<InstanceIdResult>() {
             @Override
@@ -152,12 +192,13 @@ public class MainActivity extends AppCompatActivity {
                 // or directly send it to server
                 Log.i("FIREBASE SDK token", deviceToken);
             }
-        });
+        });*/
     }
 
     @Override
     public void onNewIntent(Intent intent) {
         this.setIntent(intent);
+        Log.i("BRANCH INTENT", this.getIntent().getData().toString());
     }
 
     @Override
@@ -269,6 +310,10 @@ public class MainActivity extends AppCompatActivity {
 
         new BranchEvent("LOGIN")
                 .addCustomDataProperty("type", "user")
+                .logEvent(MainActivity.this);
+
+        new BranchEvent("YESSTYLE_FIRST_PURCHASE")
+                .addCustomDataProperty("user", "abbcdacda")
                 .logEvent(MainActivity.this);
 
     }
