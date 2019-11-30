@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         //Branch.getInstance().setPreinstallCampaign("agency_654143947735585363_My_PreInstall_test3_Ad_Campaign");
         //Branch.getInstance().setPreinstallPartner("jeff_fake_OEM");
         Branch.getInstance().setRequestMetadata("app_store","JEFF_STORE");
+        Branch.getInstance().setRequestMetadata("$braze_install_id","b87551c4-857a-4186-9117-9a34f93cc19a");
         // Branch init
         Branch.getInstance().initSession(new Branch.BranchReferralInitListener() {
 
@@ -150,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
         JSONObject installParams = Branch.getInstance().getFirstReferringParams();
         Log.i("BRANCH SDK install", installParams.toString());
 
-
-        Log.i("BRANCH INTENT", this.getIntent().getData().toString());
+        if(this.getIntent() != null&&this.getIntent().getData()!=null)
+            Log.i("BRANCH INTENT", this.getIntent().getData().toString());
 
         Log.i("FIREBASEDLINK", "FIRE read link");
         FirebaseDynamicLinks.getInstance()
@@ -198,7 +199,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onNewIntent(Intent intent) {
         this.setIntent(intent);
-        Log.i("BRANCH INTENT", this.getIntent().getData().toString());
+        if(this.getIntent() != null&&this.getIntent().getData()!=null)
+            Log.i("BRANCH INTENT", this.getIntent().getData().toString());
     }
 
     @Override
@@ -207,8 +209,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mTextMessage = (TextView) findViewById(R.id.message);
         linkText = (TextView)findViewById(R.id.linkText);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     //
@@ -248,6 +248,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void trackContent(View view){
 
+    }
+
+    public void openWebView(View view){
+        Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
+        intent.putExtra("url", "http://whereyogi.com/branch/testbranch.html");
+        startActivity(intent);
     }
 
 
