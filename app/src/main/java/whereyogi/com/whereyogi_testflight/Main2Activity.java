@@ -32,12 +32,11 @@ public class Main2Activity extends AppCompatActivity {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 /*
                 if(url!=null&&url.startsWith("https://whereyogi.app.link){
-                    ...only start activity with Branch Link
-                }
                  */
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
                 return true;
+                /*}*/
             }
         });
         WebSettings webSettings = myWebView.getSettings();
