@@ -1,7 +1,10 @@
 package whereyogi.com.whereyogi_testflight;
-
+import java.io.IOException;
+import java.lang.reflect.Method;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -19,16 +22,24 @@ import io.branch.referral.Branch;
 import io.branch.referral.BranchError;
 import io.branch.indexing.BranchUniversalObject;
 import io.branch.referral.util.BRANCH_STANDARD_EVENT;
-import io.branch.referral.util.BranchCrossPlatformId;
+import io.branch.referral.ServerRequestGetCPID.BranchCrossPlatformIdListener;
+import io.branch.referral.ServerRequestGetCPID;
+import io.branch.referral.util.BranchCPID;
 import io.branch.referral.util.BranchEvent;
-import io.branch.referral.util.BranchLastAttributedTouchData;
+import io.branch.referral.ServerRequestGetLATD.BranchLastAttributedTouchDataListener;
 import io.branch.referral.util.ContentMetadata;
 import io.branch.referral.util.CurrencyType;
 import io.branch.referral.util.ProductCategory;
 import io.branch.referral.util.BranchContentSchema;
 import io.branch.referral.util.LinkProperties;
 
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,7 +51,7 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 
-
+import android.provider.Settings.Secure;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
 
@@ -66,24 +77,21 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
             return false;
         }
     };
 
     @Override
     public void onStart(){
+
+        String android_id = Secure.getString(getApplicationContext().getContentResolver(),
+                Secure.ANDROID_ID);
+        Log.i("ANDROID_ID_TEST", android_id);
+
         super.onStart();
+        //verify AAID
+        Log.i("GPS_TEST",GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getApplicationContext())+"");
+
         // GA
         //sAnalytics = GoogleAnalytics.getInstance(this);
         //sTracker = sAnalytics.newTracker("UA-61112099-1");
@@ -103,6 +111,62 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onInitFinished(JSONObject referringParams, BranchError error) {
                 if (error == null) {
+
+                    if (referringParams != null) {
+                        try {
+                            // check if the session is from a Branch link
+                            if (referringParams.getBoolean("+clicked_branch_link")) {
+
+                                // create FirebaseAnalyhttps://docs.branch.io/apps/android/tics instance
+                                FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics
+                                        .getInstance(getApplicationContext());
+                                Bundle bundle = new Bundle();
+
+                                bundle.putBoolean("clicked_branch_link",
+                                        referringParams.getBoolean("+clicked_branch_link"));
+                                // get the click timestamp
+                                bundle.putString("click_timestamp",
+                                        referringParams.getString("+click_timestamp"));
+                                // get the link OG title
+                                bundle.putString("link_title",
+                                        referringParams.getString("$og_title"));
+                                // get the link OG image
+                                bundle.putString("link_image",
+                                        referringParams.getString("$og_image_url"));
+                                // get the link campaign
+                                bundle.putString("utm_campaign",
+                                        referringParams.getString("~campaign"));
+                                // get the link channel
+                                bundle.putString("utm_medium",
+                                        referringParams.getString("~channel"));
+                                // get the link feature
+                                bundle.putString("utm_source",
+                                        referringParams.getString("~feature"));
+
+                                // you can use the local shared preference to detect if this is an install session or open session as below
+                                SharedPreferences sharedPreferences = getApplication()
+                                        .getSharedPreferences("local_sharefpref",
+                                                Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                boolean isFirstSession = sharedPreferences
+                                        .getBoolean("is_first_session", true);
+                                if (isFirstSession) {
+                                    editor.putBoolean("is_first_session", false);
+                                    editor.apply();
+                                }
+
+                                // check if the session is install or open
+                                String eventName =
+                                        isFirstSession ? "branch_install" : "branch_open";
+
+                                // log the event to the firebase
+                                firebaseAnalytics.logEvent(eventName, bundle);
+                            }
+                        } catch (JSONException ignore) {
+                        }
+                    }
+
+
                     Log.i("BRANCH SDK INIT", referringParams.toString());
                     try {
                         //Log.i("BRANCH params", referringParams.get("params").toString());
@@ -119,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }, this.getIntent().getData(), this);
 
-        Branch.getInstance().getLastAttributedTouchData(new BranchLastAttributedTouchData.
+        Branch.getInstance().getLastAttributedTouchData(new
                 BranchLastAttributedTouchDataListener() {
             @Override
             public void onDataFetched(JSONObject jsonObject, BranchError error) {
@@ -132,9 +196,8 @@ public class MainActivity extends AppCompatActivity {
             }
         },30);
 
-        Branch.getInstance().getCrossPlatformIds(new BranchCrossPlatformId.BranchCrossPlatformIdListener() {
-            @Override
-            public void onDataFetched(BranchCrossPlatformId.BranchCPID branchCPID, BranchError error) {
+        Branch.getInstance().getCrossPlatformIds(new ServerRequestGetCPID.BranchCrossPlatformIdListener() {
+            public void onDataFetched(BranchCPID branchCPID, BranchError error) {
                 if (error == null) {
                     Log.i("CPID: ", branchCPID.toString());
                 } else {
@@ -207,8 +270,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mTextMessage = (TextView) findViewById(R.id.message);
-        linkText = (TextView)findViewById(R.id.linkText);
     }
 
     //
@@ -320,8 +381,14 @@ public class MainActivity extends AppCompatActivity {
 
         new BranchEvent("YESSTYLE_FIRST_PURCHASE")
                 .addCustomDataProperty("user", "abbcdacda")
+                .addContentItems(buo)
+                .logEvent(MainActivity.this);
+
+
+        new BranchEvent("Jeff_LIU")
+                .addCustomDataProperty("user", "abbcdacda")
+                .addContentItems(buo)
                 .logEvent(MainActivity.this);
 
     }
-
 }

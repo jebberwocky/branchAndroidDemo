@@ -74,7 +74,7 @@
             android:name="io.branch.sdk.TestMode"
             android:value="false" />
 
-        <!-- Branch install referrer tracking (optional) -->
+        <!--REMOVED Branch install referrer tracking (optional)
         <receiver
             android:name="io.branch.referral.InstallListener"
             android:exported="true">
@@ -82,6 +82,7 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
+        -->
         <!-- Google Analytics -->
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
