@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         Branch.getInstance().setRequestMetadata("app_store","JEFF_STORE");
         Branch.getInstance().setRequestMetadata("$braze_install_id","b87551c4-857a-4186-9117-9a34f93cc19a");
         // Branch init
+        /*
         Branch.getInstance().initSession(new Branch.BranchReferralInitListener() {
 
             @Override
@@ -205,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        */
 
         // latest
         JSONObject sessionParams = Branch.getInstance().getLatestReferringParams();

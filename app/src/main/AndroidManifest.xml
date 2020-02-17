@@ -11,14 +11,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/app_name"
             android:launchMode="singleTask">
             <intent-filter>
@@ -74,7 +75,8 @@
             android:name="io.branch.sdk.TestMode"
             android:value="false" />
 
-        <!--REMOVED Branch install referrer tracking (optional)
+        <!--
+        REMOVED Branch install referrer tracking (optional)
         <receiver
             android:name="io.branch.referral.InstallListener"
             android:exported="true">
@@ -107,18 +109,16 @@
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
             android:exported="false" />
-        <service
-            android:name=".java.MyFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
 
         <activity
             android:name=".Main2Activity"
             android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/app_name"/>
     </application>
 
 </manifest>
