@@ -6,9 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
+//import android.support.design.widget.BottomNavigationView;
+//import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.util.Log;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        public boolean onNavigationItemSelected(MenuItem item) {
             return false;
         }
     };
@@ -106,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
         Branch.getInstance().setRequestMetadata("app_store","JEFF_STORE");
         Branch.getInstance().setRequestMetadata("$braze_install_id","b87551c4-857a-4186-9117-9a34f93cc19a");
         // Branch init
+<<<<<<< Updated upstream
+=======
+    /*
+>>>>>>> Stashed changes
         Branch.getInstance().initSession(new Branch.BranchReferralInitListener() {
 
             @Override
@@ -206,6 +211,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+<<<<<<< Updated upstream
+=======
+    */
+>>>>>>> Stashed changes
         // latest
         JSONObject sessionParams = Branch.getInstance().getLatestReferringParams();
         Log.i("BRANCH SDK latest", sessionParams.toString());
@@ -240,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
+                    public void onFailure(Exception e) {
                         Log.e("FIREBASEDLINK", "getDynamicLink:onFailure");
                     }
                 });
