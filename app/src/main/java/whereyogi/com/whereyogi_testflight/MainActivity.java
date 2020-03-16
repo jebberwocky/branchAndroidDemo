@@ -53,8 +53,6 @@ import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 
 import android.provider.Settings.Secure;
-import com.google.firebase.iid.FirebaseInstanceIdService;
-
 
 /*
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -107,10 +105,7 @@ public class MainActivity extends AppCompatActivity {
         Branch.getInstance().setRequestMetadata("app_store","JEFF_STORE");
         Branch.getInstance().setRequestMetadata("$braze_install_id","b87551c4-857a-4186-9117-9a34f93cc19a");
         // Branch init
-<<<<<<< Updated upstream
-=======
     /*
->>>>>>> Stashed changes
         Branch.getInstance().initSession(new Branch.BranchReferralInitListener() {
 
             @Override
@@ -210,11 +205,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-<<<<<<< Updated upstream
-=======
     */
->>>>>>> Stashed changes
         // latest
         JSONObject sessionParams = Branch.getInstance().getLatestReferringParams();
         Log.i("BRANCH SDK latest", sessionParams.toString());
