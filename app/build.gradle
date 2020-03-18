@@ -30,7 +30,7 @@ dependencies {
     //TWA
     //implementation 'com.github.GoogleChrome.custom-tabs-client:customtabs:d08e93fce3'
     //Branch
-    implementation 'io.branch.sdk.android:library:4.3.2'
+    implementation 'io.branch.sdk.android:library:4.4.0'
     implementation 'com.android.support:customtabs:28.0.0'
     implementation 'com.google.android.gms:play-services-analytics:16.0.8'
     implementation 'com.google.firebase:firebase-dynamic-links:16.1.8'
