@@ -1,6 +1,8 @@
 package whereyogi.com.whereyogi_testflight;
 import java.io.IOException;
 import java.lang.reflect.Method;
+
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -273,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //
-    public void createLink(View view){
+    public void createLink(final View view){
 
         Branch.getInstance().setIdentity("JEFFUUID");
 
@@ -300,7 +302,8 @@ public class MainActivity extends AppCompatActivity {
             public void onLinkCreate(String url, BranchError error) {
                 if (error == null) {
                     Log.i("BRANCH SDK", "got my Branch link to share: " + url);
-                    linkText.setText(url);
+                    TextView tv =  view.getRootView().findViewById(R.id.linkText);
+                    tv.setText(url);
                 }
             }
         });
@@ -309,6 +312,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void trackContent(View view){
 
+    }
+
+    public void showBranchAttrData(View view){
+        CustomApplicationClass applicationClass = (CustomApplicationClass)getApplicationContext();
+        String _json_data = applicationClass.getData();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(_json_data)
+                .setTitle("data");
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void openWebView(View view){
@@ -379,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
                 .addCustomDataProperty("type", "user")
                 .logEvent(MainActivity.this);
 
-        new BranchEvent("YESSTYLE_FIRST_PURCHASE")
+        new BranchEvent("XXXXXXX")
                 .addCustomDataProperty("user", "abbcdacda")
                 .addContentItems(buo)
                 .logEvent(MainActivity.this);

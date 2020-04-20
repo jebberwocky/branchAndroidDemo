@@ -4,6 +4,10 @@ import android.app.Application;
 import io.branch.referral.Branch;
 
 public class CustomApplicationClass extends Application {
+    private String data;
+    public String getData() {return data;}
+    public void setData(String data) {this.data = data;}
+
     @Override
     public void onCreate() {
         super.onCreate();

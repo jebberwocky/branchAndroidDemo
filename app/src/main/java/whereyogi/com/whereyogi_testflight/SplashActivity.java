@@ -27,7 +27,7 @@ import android.util.Log;
 public class SplashActivity extends AppCompatActivity {
 
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 5000;
+    private final int SPLASH_DISPLAY_LENGTH = 3000;
 
     /** Called when the activity is first created. */
     @Override
@@ -38,16 +38,21 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override protected void onStart() {
         super.onStart();
-        Branch.getInstance().initSession(new Branch.BranchReferralInitListener() {
+
+        Branch.getInstance().sessionBuilder(this).withCallback(new Branch.BranchReferralInitListener() {
 
             @Override
             public void onInitFinished(JSONObject referringParams, BranchError error) {
-                if(referringParams !=null)
-                    Log.i("BRANCH Params",referringParams.toString());
+                if(referringParams !=null) {
+                    Log.i("BRANCH Params", referringParams.toString());
+                    CustomApplicationClass applicationClass = (CustomApplicationClass)getApplicationContext();
+                    applicationClass.setData(referringParams.toString());
+                }
                 if(error!=null)
                     Log.e("BRANCH ERROR", error.getMessage());
                 /* New Handler to start the Menu-Activity
                  * and close this Splash-Screen after some seconds.*/
+
                 new Handler().postDelayed(new Runnable(){
                     @Override
                     public void run() {
@@ -57,11 +62,8 @@ public class SplashActivity extends AppCompatActivity {
                         SplashActivity.this.finish();
                     }
                 }, SPLASH_DISPLAY_LENGTH);
-
             }}
-            , this.getIntent().getData(), this);
-
-
+        ).init();
     }
 
     @Override
