@@ -374,7 +374,16 @@ public class MainActivity extends AppCompatActivity {
                 .setRevenue(9.99) //此次购买收入
                 .addCustomDataProperty("purchase_channel", "Google Play US")
                 .logEvent(MainActivity.this);
+
     */
+        new BranchEvent(BRANCH_STANDARD_EVENT.INITIATE_PURCHASE)
+                .addContentItems(buo)
+                .setCurrency(CurrencyType.USD)
+                .setTransactionID("order_id_1231231")
+                .setRevenue(10)
+                .addCustomDataProperty("payment","Cod")
+                .logEvent(this.getApplicationContext());
+
         new BranchEvent(BRANCH_STANDARD_EVENT.VIEW_ITEM)
                 .addContentItems(buo)
                 .setCurrency(CurrencyType.USD)
