@@ -3,6 +3,7 @@ package whereyogi.com.whereyogi_testflight;
 import android.app.Application;
 import io.branch.referral.Branch;
 
+
 public class CustomApplicationClass extends Application {
     private String data;
     public String getData() {return data;}

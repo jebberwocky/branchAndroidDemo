@@ -25,11 +25,14 @@ import io.branch.referral.Branch;
 import io.branch.referral.BranchError;
 import io.branch.indexing.BranchUniversalObject;
 import io.branch.referral.util.BRANCH_STANDARD_EVENT;
+/*
 import io.branch.referral.ServerRequestGetCPID.BranchCrossPlatformIdListener;
 import io.branch.referral.ServerRequestGetCPID;
 import io.branch.referral.util.BranchCPID;
 import io.branch.referral.util.BranchEvent;
 import io.branch.referral.ServerRequestGetLATD.BranchLastAttributedTouchDataListener;
+ */
+import io.branch.referral.util.BranchEvent;
 import io.branch.referral.util.ContentMetadata;
 import io.branch.referral.util.CurrencyType;
 import io.branch.referral.util.ProductCategory;
@@ -404,6 +407,12 @@ public class MainActivity extends AppCompatActivity {
         new BranchEvent("XXXXXXX")
                 .addCustomDataProperty("user", "abbcdacda")
                 .addContentItems(buo)
+                .logEvent(MainActivity.this);
+
+
+        new BranchEvent("view_product_info")
+                .addCustomDataProperty("product_id", "4")
+                .addCustomDataProperty("token", "TXc9PUAzNzk5Zjc1MWMyODMwMmViMGZmODk1MjNhY2Y0YmE1MzE1ODk4Nzc4OTE=")
                 .logEvent(MainActivity.this);
 
 

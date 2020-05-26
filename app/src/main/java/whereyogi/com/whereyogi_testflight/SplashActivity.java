@@ -9,11 +9,13 @@ import io.branch.referral.Branch;
 import io.branch.referral.BranchError;
 import io.branch.indexing.BranchUniversalObject;
 import io.branch.referral.util.BRANCH_STANDARD_EVENT;
+/*
 import io.branch.referral.ServerRequestGetCPID.BranchCrossPlatformIdListener;
 import io.branch.referral.ServerRequestGetCPID;
 import io.branch.referral.util.BranchCPID;
 import io.branch.referral.util.BranchEvent;
 import io.branch.referral.ServerRequestGetLATD.BranchLastAttributedTouchDataListener;
+ */
 import io.branch.referral.util.ContentMetadata;
 import io.branch.referral.util.CurrencyType;
 import io.branch.referral.util.ProductCategory;
@@ -23,6 +25,7 @@ import io.branch.referral.util.LinkProperties;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.util.Log;
+import io.branch.referral.validators.IntegrationValidator;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -39,7 +42,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override protected void onStart() {
         super.onStart();
 
-        Branch.getInstance().sessionBuilder(this).withCallback(new Branch.BranchReferralInitListener() {
+        IntegrationValidator.validate(SplashActivity.this);
+        Branch.getInstance().initSession( new Branch.BranchReferralInitListener() {
 
             @Override
             public void onInitFinished(JSONObject referringParams, BranchError error) {
@@ -63,7 +67,7 @@ public class SplashActivity extends AppCompatActivity {
                     }
                 }, SPLASH_DISPLAY_LENGTH);
             }}
-        ).init();
+        ,this);
     }
 
     @Override
