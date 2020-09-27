@@ -85,7 +85,7 @@
             </intent-filter>
         </receiver>
         -->
-        <!-- Google Analytics -->
+        <!-- Google Analytics
         <receiver
             android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
             android:enabled="true"
@@ -103,7 +103,7 @@
             <intent-filter>
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
         <service
             android:name="com.google.android.gms.analytics.AnalyticsService"

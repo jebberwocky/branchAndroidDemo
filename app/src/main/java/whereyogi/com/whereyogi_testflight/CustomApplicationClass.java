@@ -18,5 +18,7 @@ public class CustomApplicationClass extends Application {
         Branch.disableTestMode();
         // Branch object initialization
         Branch.getAutoInstance(this);
+
+        BranchCustomTagProvider.setApplicationContext(this);
     }
 }

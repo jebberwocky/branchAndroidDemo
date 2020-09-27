@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "whereyogi.com.whereyogi_testflight"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -30,8 +30,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     //TWA
     //implementation 'com.github.GoogleChrome.custom-tabs-client:customtabs:d08e93fce3'
+    //GTM
+    implementation 'com.google.android.gms:play-services-tagmanager:16.0.8'
     //Branch
-    implementation 'io.branch.sdk.android:library:5.0.1'
+    implementation 'io.branch.sdk.android:library:4.4.0'
     implementation 'com.android.support:customtabs:28.0.0'
     implementation 'com.google.android.gms:play-services-analytics:16.0.8'
     implementation 'com.google.firebase:firebase-dynamic-links:16.1.8'

@@ -19,6 +19,7 @@ import io.branch.referral.util.CurrencyType;
 import io.branch.referral.util.ProductCategory;
 import io.branch.referral.util.BranchContentSchema;
 import io.branch.referral.util.LinkProperties;
+import io.branch.referral.validators.IntegrationValidator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +40,11 @@ public class SplashActivity extends AppCompatActivity {
     @Override protected void onStart() {
         super.onStart();
 
+        Branch.getInstance().setRequestMetadata("jeff_data","JEFF_LIU");
+        Branch.getInstance().setPreinstallPartner("a_duanxin");
+        IntegrationValidator.validate(this);
+        Branch.getInstance().setPreinstallPartner("a_duanxin");
+
         Branch.getInstance().sessionBuilder(this).withCallback(new Branch.BranchReferralInitListener() {
 
             @Override
@@ -47,16 +53,17 @@ public class SplashActivity extends AppCompatActivity {
                     Log.i("BRANCH Params", referringParams.toString());
                     CustomApplicationClass applicationClass = (CustomApplicationClass)getApplicationContext();
                     applicationClass.setData(referringParams.toString());
+                }else{
+                    Log.i("BRANCH Params", "NULL");
                 }
                 if(error!=null)
                     Log.e("BRANCH ERROR", error.getMessage());
-                /* New Handler to start the Menu-Activity
-                 * and close this Splash-Screen after some seconds.*/
+               //New Handler to start the Menu-Activity
+               //and close this Splash-Screen after some seconds.
 
                 new Handler().postDelayed(new Runnable(){
                     @Override
                     public void run() {
-                        /* Create an Intent that will start the Menu-Activity. */
                         Intent mainIntent = new Intent(SplashActivity.this,MainActivity.class);
                         SplashActivity.this.startActivity(mainIntent);
                         SplashActivity.this.finish();
@@ -64,6 +71,15 @@ public class SplashActivity extends AppCompatActivity {
                 }, SPLASH_DISPLAY_LENGTH);
             }}
         ).init();
+
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                Intent mainIntent = new Intent(SplashActivity.this,MainActivity.class);
+                SplashActivity.this.startActivity(mainIntent);
+                SplashActivity.this.finish();
+            }
+        }, SPLASH_DISPLAY_LENGTH);
     }
 
     @Override

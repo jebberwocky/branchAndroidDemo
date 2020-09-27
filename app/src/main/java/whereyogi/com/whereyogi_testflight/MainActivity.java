@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 //import android.support.design.widget.BottomNavigationView;
 //import android.support.v7.app.AppCompatActivity;
+import com.google.android.gms.tagmanager.DataLayer;
+import com.google.android.gms.tagmanager.TagManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     //private static GoogleAnalytics sAnalytics;
     //private static Tracker sTracker;
-
+    private FirebaseAnalytics mFirebaseAnalytics;
     private TextView mTextMessage;
     private TextView linkText;
 
@@ -103,87 +105,26 @@ public class MainActivity extends AppCompatActivity {
 
         Branch.getInstance().setIdentity("UUID123456");
         //Branch.getInstance().setPreinstallCampaign("agency_654143947735585363_My_PreInstall_test3_Ad_Campaign");
-        //Branch.getInstance().setPreinstallPartner("jeff_fake_OEM");
         Branch.getInstance().setRequestMetadata("app_store","JEFF_STORE");
+        //Branch.getInstance().setPreinstallPartner("a_duanxin");
+        /*
         Branch.getInstance().setRequestMetadata("$braze_install_id","b87551c4-857a-4186-9117-9a34f93cc19a");
         // Branch init
-    /*
-        Branch.getInstance().initSession(new Branch.BranchReferralInitListener() {
+       Branch.getInstance().sessionBuilder(this).withCallback(new Branch.BranchReferralInitListener() {
 
             @Override
             public void onInitFinished(JSONObject referringParams, BranchError error) {
-                if (error == null) {
-
-                    if (referringParams != null) {
-                        try {
-                            // check if the session is from a Branch link
-                            if (referringParams.getBoolean("+clicked_branch_link")) {
-
-                                // create FirebaseAnalyhttps://docs.branch.io/apps/android/tics instance
-                                FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics
-                                        .getInstance(getApplicationContext());
-                                Bundle bundle = new Bundle();
-
-                                bundle.putBoolean("clicked_branch_link",
-                                        referringParams.getBoolean("+clicked_branch_link"));
-                                // get the click timestamp
-                                bundle.putString("click_timestamp",
-                                        referringParams.getString("+click_timestamp"));
-                                // get the link OG title
-                                bundle.putString("link_title",
-                                        referringParams.getString("$og_title"));
-                                // get the link OG image
-                                bundle.putString("link_image",
-                                        referringParams.getString("$og_image_url"));
-                                // get the link campaign
-                                bundle.putString("utm_campaign",
-                                        referringParams.getString("~campaign"));
-                                // get the link channel
-                                bundle.putString("utm_medium",
-                                        referringParams.getString("~channel"));
-                                // get the link feature
-                                bundle.putString("utm_source",
-                                        referringParams.getString("~feature"));
-
-                                // you can use the local shared preference to detect if this is an install session or open session as below
-                                SharedPreferences sharedPreferences = getApplication()
-                                        .getSharedPreferences("local_sharefpref",
-                                                Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                boolean isFirstSession = sharedPreferences
-                                        .getBoolean("is_first_session", true);
-                                if (isFirstSession) {
-                                    editor.putBoolean("is_first_session", false);
-                                    editor.apply();
-                                }
-
-                                // check if the session is install or open
-                                String eventName =
-                                        isFirstSession ? "branch_install" : "branch_open";
-
-                                // log the event to the firebase
-                                firebaseAnalytics.logEvent(eventName, bundle);
-                            }
-                        } catch (JSONException ignore) {
-                        }
-                    }
-
-
-                    Log.i("BRANCH SDK INIT", referringParams.toString());
-                    try {
-                        //Log.i("BRANCH params", referringParams.get("params").toString());
-                        Log.i("BRANCH $canonical_url", referringParams.get("$canonical_url").toString());
-
-                    }catch (JSONException exception){
-                        Log.e("Casting error", exception.toString());
-                    }
-                    int credits = Branch.getInstance(getApplicationContext()).getCredits();
-                    Log.i("Branch Credit", Integer.toString(credits));
-                } else {
-                    Log.e("BRANCH SDK ERROR", error.getMessage());
+                if(referringParams !=null) {
+                    Log.i("BRANCH Params", referringParams.toString());
+                    CustomApplicationClass applicationClass = (CustomApplicationClass)getApplicationContext();
+                    applicationClass.setData(referringParams.toString());
+                }else{
+                    Log.i("BRANCH Params", "NULL");
                 }
-            }
-        }, this.getIntent().getData(), this);
+                if(error!=null)
+                    Log.e("BRANCH ERROR", error.getMessage());
+            }}
+        ).init();
 
         Branch.getInstance().getLastAttributedTouchData(new
                 BranchLastAttributedTouchDataListener() {
@@ -207,7 +148,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    */
+
+         */
+
         // latest
         JSONObject sessionParams = Branch.getInstance().getLatestReferringParams();
         Log.i("BRANCH SDK latest", sessionParams.toString());
@@ -272,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     //
@@ -335,6 +279,14 @@ public class MainActivity extends AppCompatActivity {
     /** Called when the user touches the button */
     public void trackCommerce(View view) {
 
+        Bundle params = new Bundle();
+        //mFirebaseAnalytics.logEvent("branch_test", params);
+
+        mFirebaseAnalytics.logEvent("branchtest2",params);
+
+        //DataLayer dataLayer = TagManager.getInstance(this).getDataLayer();
+        //dataLayer.pushEvent("branch_test",DataLayer.mapOf("test", "branch"));
+
         // Do something in response to button click
         BranchUniversalObject buo = new BranchUniversalObject()
                 .setCanonicalIdentifier("myprod/1234")
@@ -360,8 +312,8 @@ public class MainActivity extends AppCompatActivity {
                 .addKeyWord("keyword1")
                 .addKeyWord("keyword2");
 
-        new BranchEvent(BRANCH_STANDARD_EVENT.PURCHASE)
-                .addContentItems(buo)
+        new BranchEvent(BRANCH_STANDARD_EVENT.COMPLETE_REGISTRATION)
+                //.addContentItems(buo)
                 .setCurrency(CurrencyType.USD)
                 .setTransactionID("order_id_1231231")
                 .setRevenue(10)
