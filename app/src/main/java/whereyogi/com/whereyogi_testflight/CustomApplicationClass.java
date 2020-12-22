@@ -1,6 +1,8 @@
 package whereyogi.com.whereyogi_testflight;
 
 import android.app.Application;
+
+import androidx.annotation.NonNull;
 import io.branch.referral.Branch;
 
 public class CustomApplicationClass extends Application {
@@ -15,10 +17,11 @@ public class CustomApplicationClass extends Application {
         // Branch logging for debugging
         Branch.enableLogging();
         //Branch.enableDebugMode();
+        Branch.enableTestMode();
         Branch.disableTestMode();
         // Branch object initialization
         Branch.getAutoInstance(this);
-
+        Branch.getInstance().setBranchRemoteInterface(new OkhttpBranchNetworkInterface());
         BranchCustomTagProvider.setApplicationContext(this);
     }
 }

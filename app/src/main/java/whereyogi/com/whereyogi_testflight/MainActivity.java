@@ -348,6 +348,8 @@ public class MainActivity extends AppCompatActivity {
                 .addCustomDataProperty("type", "user")
                 .logEvent(MainActivity.this);
 
+        new BranchEvent(BRANCH_STANDARD_EVENT.LOGIN)
+                .logEvent(MainActivity.this);
 
         new BranchEvent("LOGIN")
                 .addCustomDataProperty("type", "user")
@@ -362,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
         new BranchEvent("Jeff_LIU")
                 .addCustomDataProperty("user", "abbcdacda")
                 .addContentItems(buo)
-                .logEvent(MainActivity.this);
+                .logEvent(null);
 
     }
 }

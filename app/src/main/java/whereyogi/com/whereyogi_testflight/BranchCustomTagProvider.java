@@ -22,7 +22,11 @@ public class BranchCustomTagProvider implements CustomTagProvider {
 
     @Override
     public void execute(Map<String, Object> variables) {
-        BranchEvent event = new BranchEvent("branch_custom_tag");
+        String event_name = "branch_gtm_test";
+        if(variables.containsKey("event_name")){
+            event_name = variables.get("event_name").toString();
+        }
+        BranchEvent event = new BranchEvent(event_name);
         for (String key: variables.keySet()) {
             event.addCustomDataProperty(key, variables.get(key).toString());
         }
