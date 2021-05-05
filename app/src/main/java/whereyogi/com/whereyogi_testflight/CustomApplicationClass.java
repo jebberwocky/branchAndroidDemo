@@ -21,7 +21,7 @@ public class CustomApplicationClass extends Application {
         Branch.disableTestMode();
         // Branch object initialization
         Branch.getAutoInstance(this);
-        Branch.getInstance().setBranchRemoteInterface(new OkhttpBranchNetworkInterface());
-        BranchCustomTagProvider.setApplicationContext(this);
+        //Branch.getInstance().setBranchRemoteInterface(new OkhttpBranchNetworkInterface());
+        //BranchCustomTagProvider.setApplicationContext(this);
     }
 }

@@ -41,9 +41,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onStart();
 
         Branch.getInstance().setRequestMetadata("jeff_data","JEFF_LIU");
-        Branch.getInstance().setPreinstallPartner("a_duanxin");
+        //Branch.getInstance().setPreinstallPartner("a_duanxin");
         IntegrationValidator.validate(this);
-        Branch.getInstance().setPreinstallPartner("a_duanxin");
+        //Branch.getInstance().setPreinstallPartner("a_duanxin");
 
         Branch.getInstance().sessionBuilder(this).withCallback(new Branch.BranchReferralInitListener() {
 
