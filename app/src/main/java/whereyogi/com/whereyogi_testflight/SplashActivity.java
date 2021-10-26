@@ -81,13 +81,29 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
-
+/*
     @Override
     public void onNewIntent(Intent intent) {
         this.setIntent(intent);
         if(this.getIntent() != null&&this.getIntent().getData()!=null)
             Log.i("BRANCH INTENT", this.getIntent().getData().toString());
+    }*/
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        // if activity is in foreground (or in backstack but partially visible) launching the same
+        // activity will skip onStart, handle this case with reInitSession
+        if (intent != null &&
+                intent.hasExtra("branch_force_new_session") &&
+                intent.getBooleanExtra("branch_force_new_session",false)) {
+            //if need to reinit, please use following code
+            //Branch.sessionBuilder(this).withCallback(branchReferralInitListener).reInit();
+        }
     }
+
+
 
 
 }
