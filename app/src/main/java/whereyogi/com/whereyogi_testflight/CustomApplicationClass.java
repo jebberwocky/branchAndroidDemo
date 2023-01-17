@@ -17,11 +17,15 @@ public class CustomApplicationClass extends Application {
         // Branch logging for debugging
         Branch.enableLogging();
         //Branch.enableDebugMode();
-        Branch.enableTestMode();
-        Branch.disableTestMode();
+        //Branch.enableTestMode();a_oppopai
+        //Branch.disableTestMode();
         // Branch object initialization
+
         Branch.getAutoInstance(this);
+        Branch.getInstance().setNetworkTimeout(1000);
         //Branch.getInstance().setBranchRemoteInterface(new OkhttpBranchNetworkInterface());
         //BranchCustomTagProvider.setApplicationContext(this);
+        Branch.getInstance().setPreinstallCampaign("agency_654143947735585363_My_FAKE_OPPO_PAI_PreInstall_test");
+        Branch.getInstance().setPreinstallPartner("a_oppopai");
     }
 }

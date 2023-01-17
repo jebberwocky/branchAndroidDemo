@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import io.branch.referral.Branch;
 import io.branch.referral.BranchError;
 import io.branch.indexing.BranchUniversalObject;
+import io.branch.referral.SharingHelper;
 import io.branch.referral.util.BRANCH_STANDARD_EVENT;
 import io.branch.referral.ServerRequestGetCPID.BranchCrossPlatformIdListener;
 import io.branch.referral.ServerRequestGetCPID;
@@ -37,6 +38,7 @@ import io.branch.referral.util.CurrencyType;
 import io.branch.referral.util.ProductCategory;
 import io.branch.referral.util.BranchContentSchema;
 import io.branch.referral.util.LinkProperties;
+import io.branch.referral.util.ShareSheetStyle;
 
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -97,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
         // GA
         //sAnalytics = GoogleAnalytics.getInstance(this);
-        //sTracker = sAnalytics.newTracker("UA-61112099-1");
+        //sTracker = sAnalytics.newTrac
+        // ker("UA-61112099-1");
 
         //String client_id = sTracker.get("&cid");
         //Log.i("GA client_ud", client_id);
@@ -125,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("BRANCH ERROR", error.getMessage());
             }}
         ).init();
-
+*/
         Branch.getInstance().getLastAttributedTouchData(new
                 BranchLastAttributedTouchDataListener() {
             @Override
@@ -149,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-         */
+
 
         // latest
         JSONObject sessionParams = Branch.getInstance().getLatestReferringParams();
@@ -266,6 +269,37 @@ public class MainActivity extends AppCompatActivity {
                 .setTitle("data");
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    public void shareSheet(View view){
+
+        BranchUniversalObject buo = new BranchUniversalObject();
+        LinkProperties lp = new LinkProperties()
+                .setFeature("testsharesheet")
+                .setCampaign("testsharesheet 123 launch");
+
+        ShareSheetStyle ss = new ShareSheetStyle(MainActivity.this, "Check this out!", "This stuff is awesome: ")
+                .addPreferredSharingOption(SharingHelper.SHARE_WITH.FACEBOOK)
+                .addPreferredSharingOption(SharingHelper.SHARE_WITH.EMAIL)
+                .addPreferredSharingOption(SharingHelper.SHARE_WITH.MESSAGE)
+                .addPreferredSharingOption(SharingHelper.SHARE_WITH.HANGOUT)
+                .setAsFullWidthStyle(true)
+                .setSharingTitle("Share With");
+
+        buo.showShareSheet(this, lp,  ss,  new Branch.BranchLinkShareListener() {
+            @Override
+            public void onShareLinkDialogLaunched() {
+            }
+            @Override
+            public void onShareLinkDialogDismissed() {
+            }
+            @Override
+            public void onLinkShareResponse(String sharedLink, String sharedChannel, BranchError error) {
+            }
+            @Override
+            public void onChannelSelected(String channelName) {
+            }
+        });
     }
 
     public void openWebView(View view){

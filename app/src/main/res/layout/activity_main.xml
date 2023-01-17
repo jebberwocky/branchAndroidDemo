@@ -9,6 +9,17 @@
     tools:layout_editor_absoluteY="81dp">
 
     <Button
+        android:id="@+id/button5"
+        android:layout_width="352dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="468dp"
+        android:onClick="showBranchAttrData"
+        android:text="Display data"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -57,11 +68,12 @@
         android:id="@+id/button4"
         android:layout_width="352dp"
         android:layout_height="61dp"
-        android:layout_marginTop="468dp"
-        android:onClick="showBranchAttrData"
-        android:text="Display data"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="34dp" />
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="548dp"
+        android:onClick="shareSheet"
+        android:text="share via showShareSheet"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/linkText"
